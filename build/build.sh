@@ -11,8 +11,9 @@ mkdir out/js
 # compile less
 lessc less/layout.less out/layout.css
 lessc less/mix-ins.less out/mix-ins.css
-cat out/layout.css out/mix-ins.css > out/css/zue.css
-rm out/layout.css out/mix-ins.css
+lessc less/dashboard.less out/dashboard.css
+cat out/layout.css out/mix-ins.css out/dashboard.css > out/css/zue.css
+rm out/layout.css out/mix-ins.css out/dashboard.css
 
 # compile javascript
 uglifyjs js/LoadingCtrl.js js/ZueProject.js js/ZueCtrl.js \

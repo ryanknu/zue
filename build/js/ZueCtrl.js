@@ -11,4 +11,9 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.$on('DataService.update', function(event, lights) {
         $scope.lights = lights;
     })
+    
+    $scope.toggleLight = function($event, light_id) {
+        light_id = parseInt(light_id);
+        $('#light-' + light_id).css('border-color', 'green');
+    }
 }

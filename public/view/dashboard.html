@@ -1,6 +1,10 @@
 <div class="dashboard">
-    <a ng-click="sayhello()">Sample Object</a>
-    <div ng-repeat="light in lights">
-        {{light.id}}
+    <div id="light-{{light.id}}" ng-click="toggleLight($event, light.id)"
+        style="border-color: {{light.zhue_color.hex}}"
+        ng-class="{on: light.state.on}" class="light {{light.modelid}}" ng-repeat="light in lights">
+        <h2>{{light.name}}</h2>
+        {{light.zhue_color.hex}}
+        <a href="/zue/light/{{light.id}}/on" ng-show="{{!light.state.on}}">Turn on</a>
+        <a href="/zue/light/{{light.id}}/off" ng-show="{{light.state.on}}">Turn off</a>
     </div>
 </div>

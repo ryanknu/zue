@@ -4,7 +4,7 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
     $scope.noBridgeFound = "";
     
     if ( ! $scope.isAssociated ) {
-        $http.get('/api/' + ZConfig.application + '/lights')
+        $http.get('/api/' + ZConfig.application)
             .success(function(data) {
                 if ( typeof data === 'array' && d.error.type == 1 ) {
                     $scope.unassociated();
@@ -23,10 +23,24 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
     }
     
     $scope.associated = function(data) {
+        var lights = data.lights;
         for ( i = 1; i < 1024; i++ ) {
             var stri = i+"";
-            if ( stri in data ) {
-                DataService.addLight(data[stri]);
+            if ( stri in lights ) {
+                var l = lights[stri];
+                var rgb = colorConverter.xyBriToRgb({
+                      x: l.state.xy[0],
+                      y: l.state.xy[1],
+                    bri: (l.state.bri / 255.0)
+                });
+                
+                lights[stri].id = i;
+                lights[stri].zhue_color = {};
+                lights[stri].zhue_color.hex = '#' + colorConverter.rgbToHexString(rgb);
+                lights[stri].zhue_color.r = rgb.r;
+                lights[stri].zhue_color.g = rgb.g;
+                lights[stri].zhue_color.b = rgb.b;
+                DataService.addLight(lights[stri]);
             }
             else {
                 i += 1024;
