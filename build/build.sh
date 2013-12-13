@@ -1,6 +1,6 @@
 # move into build directory, if not already in it
 # this will allow us to build from either zue or zue/build
-pushd build
+cd build
 
 # set up directories
 rm -rf out
