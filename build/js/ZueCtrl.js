@@ -3,6 +3,7 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.maxGroups = 16;
     $scope.authorized = false;
     $scope.lights = DataService.lights;
+    $scope.bridgeAddr = '';
     
     if ( !$scope.lights.length ) {
         $location.path('/'); // go back to loading

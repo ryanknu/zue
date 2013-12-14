@@ -17,7 +17,7 @@ rm out/layout.css out/mix-ins.css out/dashboard.css
 
 # compile javascript
 uglifyjs js/LoadingCtrl.js js/ZueProject.js js/ZueCtrl.js \
-    js/AssociateCtrl.js -o out/js/zue.js
+    js/AssociateCtrl.js js/LightCtrl.js -o out/js/zue.js
 
 # copy directory to public
 rm -rf ../public/css

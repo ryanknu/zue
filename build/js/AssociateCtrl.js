@@ -1,10 +1,10 @@
-function AssociateCtrl($scope, $location, $http, ZConfig)
+function AssociateCtrl($scope, $location, $http, ZConfig, DataService)
 {
     $scope.message = 'Click the associate button to link to bridge.';
     
     $scope.tryAssoc = function() {
         $scope.message = 'Dispatching..';
-        $http.post('/api', JSON.stringify({devicetype:'zulworkswebapp', username: ZConfig.application}))
+        $http.post(DataService.bridge + '/api', JSON.stringify({devicetype:'zulworkswebapp', username: ZConfig.application}))
             .success(function(data) {
                 var d = data[0];
                 if ( 'error' in d && d.error.type == 101 ) {

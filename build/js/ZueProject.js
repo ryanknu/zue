@@ -15,6 +15,10 @@ angular.module('zue-project', ['ngRoute'])
             templateUrl: 'view/associate.html'
             
         })
+        .when('/zue/light/:lightId/:action', {
+            controller: 'LightCtrl',
+            templateUrl: 'view/light.html'
+        })
         .otherwise({ redirectTo: '/' });
 })
 
@@ -24,10 +28,20 @@ angular.module('zue-project', ['ngRoute'])
         groups: [],
         schedules: [],
         config: {},
+        bridge: '',
         
         addLight:function(l) {
-            this.lights.push(l);
-            $rootScope.$broadcast('DataService.update', this.lights);
+            this.lights[parseInt(l.id) - 1] = l;
+//            $rootScope.$broadcast('DataService.update', this.lights);
+        },
+        
+        updateLight:function(lid, nl) {
+            this.lights[parseInt(lid) - 1] = nl;
+//            $rootScope.$broadcast('DataService.update', this.lights);
+        },
+        
+        setBridge:function(b) {
+            this.bridge = 'http://' + b;
         }
     };
 })
