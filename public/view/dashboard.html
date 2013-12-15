@@ -1,9 +1,19 @@
 <div class="dashboard">
+    <div id="group-{{group.name}}"
+        style="border-color: {{group.color}}"
+        class="on light group" ng-repeat="group in groups">
+        <h2>{{group.name}}</h2>
+        
+        <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
+        <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
+    </div>
+    <div></div>
     <div id="light-{{light.id}}"
-        style="border-color: {{light.zhue_color.hex}}"
+        nstyle="border-color: {{light.zhue_color.hex}}"
+        style="border-color: {{light.zhue_groupcolor}}"
         ng-class="{on: light.state.on}" class="light {{light.modelid}}" ng-repeat="light in lights">
         <h2>{{light.zhue_name}}</h2>
-        <h2>{{light.zhue_group}}</h2>
+        <div class="a-ul">in {{light.zhue_group}}</div>
         {{light.zhue_color.hex}}
         <a href="#/zue/light/{{light.id}}/on/on" ng-show="{{!light.state.on}}">Turn on</a>
         <a href="#/zue/light/{{light.id}}/on/off" ng-show="{{light.state.on}}">Turn off</a>
@@ -14,15 +24,20 @@
     <div>
         {{testLight}}
     </div>
-    <div id="group-{{group.name}}"
-        class="light group" ng-repeat="group in groups">
-        <h2>{{group.name}}</h2>
-        
-        <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
-        <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
+    <div>
+        <a href="#/zue/light/{{allLights}}/on/off">All Off</a>
+        <a href="#/zue/light/{{allLights}}/on/on">All On</a>
     </div>
     <div>
-        <a href="#/zue/light/1,2,3/on/off">All Off</a>
-        <a href="#/zue/light/1,2,3/on/on">All On</a>
+        <b>Issues</b>
+        <ul>
+            <li>When adding a new light group, group.lights is not correct for the old group.</li>
+            <li>More group colors are probably needed.</li>
+            <li>Measure how long each light is on for, show cumu seconds.</li>
+            <li>We need indicators for the missing hue models (dashboard.less)</li>
+            <li>Color palette support (and create the color palette)</li>
+            <li>CT-mode (white) support.</li>
+            <li>Brightness support.</li>
+        </ul>
     </div>
 </div>

@@ -16,8 +16,14 @@ cat out/layout.css out/mix-ins.css out/dashboard.css > out/css/zue.css
 rm out/layout.css out/mix-ins.css out/dashboard.css
 
 # compile javascript
-uglifyjs js/LoadingCtrl.js js/ZueProject.js js/ZueCtrl.js \
-    js/AssociateCtrl.js js/LightCtrl.js js/IdentifyCtrl.js -b -o out/js/zue.js
+uglifyjs js/LoadingCtrl.js   \
+         js/ZueProject.js    \
+         js/ZueCtrl.js       \
+         js/AssociateCtrl.js \
+         js/LightCtrl.js     \
+         js/IdentifyCtrl.js  \
+         \
+         -b -o out/js/zue.js
 
 # copy directory to public
 rm -rf ../public/css
