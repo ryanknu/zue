@@ -2,12 +2,27 @@
     <div id="light-{{light.id}}"
         style="border-color: {{light.zhue_color.hex}}"
         ng-class="{on: light.state.on}" class="light {{light.modelid}}" ng-repeat="light in lights">
-        <h2>{{light.name}}</h2>
+        <h2>{{light.zhue_name}}</h2>
+        <h2>{{light.zhue_group}}</h2>
         {{light.zhue_color.hex}}
-        <a href="#/zue/light/{{light.id}}/on" ng-show="{{!light.state.on}}">Turn on</a>
-        <a href="#/zue/light/{{light.id}}/off" ng-show="{{light.state.on}}">Turn off</a>
+        <a href="#/zue/light/{{light.id}}/on/on" ng-show="{{!light.state.on}}">Turn on</a>
+        <a href="#/zue/light/{{light.id}}/on/off" ng-show="{{light.state.on}}">Turn off</a>
+        <a href="#/zue/light/{{light.id}}/xy/[0.6736,0.3221]">Turn red</a>
+        <a href="#/zue/light/{{light.id}}/xy/[0.3889,0.4783]">Turn lime</a>
+        <a href="#/zue/identify/{{light.id}}">Identify</a>
     </div>
     <div>
-        {{bridgeAddr}}
+        {{testLight}}
+    </div>
+    <div id="group-{{group.name}}"
+        class="light group" ng-repeat="group in groups">
+        <h2>{{group.name}}</h2>
+        
+        <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
+        <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
+    </div>
+    <div>
+        <a href="#/zue/light/1,2,3/on/off">All Off</a>
+        <a href="#/zue/light/1,2,3/on/on">All On</a>
     </div>
 </div>

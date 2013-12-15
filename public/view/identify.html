@@ -1,0 +1,18 @@
+<div style="text-align:center">
+    <b>Important</b>
+    You only have 20 characters between these two fields. A group name cannot exceed 14 characters,
+    to allow future lights to have at least 6 characters for a name. If you have a 10 character group
+    name, you are then allowed a 10 character light name. Use the preview to figure out how the
+    bulb will be identified.
+</div>
+<div style="text-align:center">
+    Group: <input ng-change="preview()" type="text" ng-model="group" /><br />
+    <span ng-repeat="group in groups">{{group}} </span>
+    <br />
+    Name: <input ng-change="preview()" type="text" ng-model="name" /><br />
+    <input type="button" value="save" ng-click="save()" />
+</div>
+
+<div style="text-align: center">
+    <b>Preview</b> Group: &quot;{{pgroup}}&quot; Local: &quot;{{plocal}}&quot;
+</div>
