@@ -32,10 +32,10 @@ uglifyjs js/controllers/LoadingCtrl.js   \
 echo '[**** ]';
 
 # copy directory to public
-rm -rf ../public/css
-rm -rf ../public/js
-cp -R out/css ../public
-cp -R out/js ../public
+rm -rf ../css
+rm -rf ../js
+cp -R out/css ..
+cp -R out/js ..
 rm -rf out
 
 echo '[*****]';
