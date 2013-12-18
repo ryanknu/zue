@@ -7,6 +7,10 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.bridgeAddr = '';
     $scope.allLights = [];
     $scope.groupColors = ['#ff0000', '#00ff00', '#0000ff'];
+    $scope.whites = ZConfig.whites;
+    $scope.colors = ZConfig.colors;
+    
+    $http.put(DataService.bridge + '/api/' + ZConfig.application + '/groups/0/action', {effect:'none'});
     
     // group colors
     for ( var i = 0; i < $scope.groups.length; i++ ) {
@@ -28,6 +32,27 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.$on('DataService.update', function(event, lights) {
         $scope.lights = lights;
     })
+    
+    $scope.clearAllPalettes = function() {
+        for( var i = 0; i < $scope.lights.length; i++ ) {
+            $scope.lights[i].palette_visible = false;
+        }
+        for( var i = 0; i < $scope.groups.length; i++ ) {
+            $scope.groups[i].palette_visible = false;
+        }
+    }
+    
+    $scope.showPalette = function(t_i) {
+        $scope.clearAllPalettes();
+        $scope.lights[t_i].palette_visible = true;
+        DataService.stickPalette('light', t_i);
+    }
+    
+    $scope.showGroupPalette = function(t_i) {
+        $scope.clearAllPalettes();
+        $scope.groups[t_i].palette_visible = true;
+        DataService.stickPalette('group', t_i);
+    }
     
     //$scope.toggleLight = function($event, light_id) {
     //    light_id = parseInt(light_id);

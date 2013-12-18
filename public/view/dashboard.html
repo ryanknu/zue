@@ -1,26 +1,37 @@
-<div class="dashboard">
+<dashboard>
     <div id="group-{{group.name}}"
         style="border-color: {{group.color}}"
-        class="on light group" ng-repeat="group in groups">
+        ng-click="showGroupPalette($index)"
+        class="on light group" ng-repeat="group in groups track by $index">
         <h2>{{group.name}}</h2>
         
         <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
         <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
+
+        <zue-group-summary>
+            <zue-minilight ng-repeat="lc in group.models track by $index" class="{{lc}}" />
+        </zue-group-summary>
+
+        <zue-group-palette ng-show="group.palette_visible" lights="group.lights.join(',')" />
+        
+        Apparently, nothing shows up after the directive #angularbugs?
+        
     </div>
     <div></div>
-    <div id="light-{{light.id}}"
+    <dashboard-cell id="light-{{light.id}}"
         nstyle="border-color: {{light.zhue_color.hex}}"
         style="border-color: {{light.zhue_groupcolor}}"
-        ng-class="{on: light.state.on}" class="light {{light.modelid}}" ng-repeat="light in lights">
+        ng-click="showPalette($index)"
+        ng-class="{on: light.state.on}" class="{{light.modelid}}" ng-repeat="light in lights track by $index">
+        <div style="float:right">
+            <a href="#/zue/light/{{light.id}}/on/on" ng-show="{{!light.state.on}}">Off</a>
+            <a href="#/zue/light/{{light.id}}/on/off" ng-show="{{light.state.on}}">On</a>
+        </div>
         <h2>{{light.zhue_name}}</h2>
         <div class="a-ul">in {{light.zhue_group}}</div>
-        {{light.zhue_color.hex}}
-        <a href="#/zue/light/{{light.id}}/on/on" ng-show="{{!light.state.on}}">Turn on</a>
-        <a href="#/zue/light/{{light.id}}/on/off" ng-show="{{light.state.on}}">Turn off</a>
-        <a href="#/zue/light/{{light.id}}/xy/[0.6736,0.3221]">Turn red</a>
-        <a href="#/zue/light/{{light.id}}/xy/[0.3889,0.4783]">Turn lime</a>
-        <a href="#/zue/identify/{{light.id}}">Identify</a>
-    </div>
+        
+        <zue-palette ng-show="light.palette_visible" light="light" />
+    </dashboard-cell>
     <div>
         {{testLight}}
     </div>
@@ -28,16 +39,4 @@
         <a href="#/zue/light/{{allLights}}/on/off">All Off</a>
         <a href="#/zue/light/{{allLights}}/on/on">All On</a>
     </div>
-    <div>
-        <b>Issues</b>
-        <ul>
-            <li>When adding a new light group, group.lights is not correct for the old group.</li>
-            <li>More group colors are probably needed.</li>
-            <li>Measure how long each light is on for, show cumu seconds.</li>
-            <li>We need indicators for the missing hue models (dashboard.less)</li>
-            <li>Color palette support (and create the color palette)</li>
-            <li>CT-mode (white) support.</li>
-            <li>Brightness support.</li>
-        </ul>
-    </div>
-</div>
+</dashboard>

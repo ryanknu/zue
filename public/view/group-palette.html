@@ -1,0 +1,23 @@
+<a href="#/zue/light/{{lights}}/on/on">Turn on</a>
+<a href="#/zue/light/{{lights}}/on/off"">Turn off</a>
+<!-- whites -->
+<div>Whites</div>
+<div style="text-align:center">
+    <a ng-repeat="white in whites" href="#/zue/light/{{lights}}/ct/{{white.ct}}">
+        <color style="background-color:{{white.hex}}"><span>{{white.name}}</span></color>
+    </a>
+</div>
+<div>Brightness</div>
+<div style="text-align:center">
+    <a href="#/zue/light/{{lights}}/bri/26"><color style="background-color:#161616;color:#fff"><span>10%</span></color></a>
+    <a href="#/zue/light/{{lights}}/bri/64"><color style="background-color:#444;color:#fff"><span>25%</span></color>
+    <a href="#/zue/light/{{lights}}/bri/126"><color style="background-color:#888"><span>50%</span></color>
+    <a href="#/zue/light/{{lights}}/bri/191"><color style="background-color:#ccc"><span>75%</span></color>
+    <a href="#/zue/light/{{lights}}/bri/255"><color style="background-color:#eee"><span>100%</span></color>
+</div>
+<div>Colors</div>
+<div style="text-align:center">
+    <a ng-repeat="color in colors" href="#/zue/light/{{lights}}/xy/{{color.xy}}">
+        <color style="background-color:{{color.hex}}"><span>{{color.name}}</span></color>
+    </a>
+</div>

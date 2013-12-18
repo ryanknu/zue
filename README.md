@@ -5,20 +5,17 @@ nginx
 npm lessc
 npm uglify-js
 
-Deploy
-==
-when you deploy, make sure you follow up with a build/build.sh to make the assets directory. Compiled assets are not committed to the repository. Also, don't forget to init.sh to create vendor files.
+Install
+=
+Run ./init.sh && build/build.sh
 
-Nginx Proxy
-==
-This program is really only meant to be deployed to nginx with proxy parameters. Point nginx document root at the public folder, then start the node server on port 9001. Obviously, all this changes depending on the release procedure you do.
-
-# forward /api calls to the Hue Bridge
-location ~ /api {
-    proxy_pass http://10.0.1.27;
-}
-
-# forward app calls to node
-location ~ /app {
-    proxy_pass http://127.0.0.1:9001;
-}
+Todo
+=
+*When adding a new light group, recalculate all groups.light.id
+*More group colors are probably needed.light.id
+*Measure how long each light is on for, show cumu seconds.light.id
+*We need indicators for the missing hue models (dashboard.less)light.id
+*Indicate current color somewhere on dashboardlight.id
+*Please can haz retina support for graphicslight.id
+*Ability to hide individual lamps from groups.light.id
+*<a href="http://www.onextrapixel.com/2011/08/22/adding-weather-to-your-site-with-jquery-and-yql/">Weather colors</a>light.id

@@ -19,12 +19,13 @@ rm out/layout.css out/mix-ins.css out/dashboard.css
 echo '[**   ]';
 
 # compile javascript
-uglifyjs js/LoadingCtrl.js   \
-         js/ZueProject.js    \
-         js/ZueCtrl.js       \
-         js/AssociateCtrl.js \
-         js/LightCtrl.js     \
-         js/IdentifyCtrl.js  \
+uglifyjs js/controllers/LoadingCtrl.js   \
+         js/controllers/ZueCtrl.js       \
+         js/controllers/AssociateCtrl.js \
+         js/controllers/LightCtrl.js     \
+         js/controllers/IdentifyCtrl.js  \
+         js/app.js \
+         js/directives/Palette.js \
          \
          -b -o out/js/zue.js
          

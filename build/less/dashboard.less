@@ -1,4 +1,4 @@
-.light {
+dashboard-cell,.light {
     display: inline-block;
     height: 136px;
     width: 136px;
@@ -8,7 +8,6 @@
     padding: 5px;
     
     &.on {
-        border-color: blue;
         border-style: solid;
     }
     
@@ -25,7 +24,71 @@
         /* Phillips "bloom" */
     }
     
+    &.BR30 {
+        /* Directional Light */
+    }
+    
     &.group {
-        background: url('/img/lightbulbgroup_50.png') no-repeat bottom right;
+        // background: url('/img/lightbulbgroup_50.png') no-repeat bottom right;
+    }
+    
+    .color-palette {
+        display: none;
+        width: 400px;
+        border: 1px solid black;
+        position: fixed;
+        right:0;
+        top:0;
+        bottom:0;
+        
+        color {
+            position: relative;
+            display: inline-block;
+            height: 75px;
+            width: 75px;
+            border-radius: 3px;
+            
+            span { display: none }
+            &:hover span { display: inline; position: absolute; right: 0; bottom:0; }
+        }
+    }
+}
+
+zue-group-palette,zue-palette {
+    width: 400px;
+    border: 1px solid black;
+    position: fixed;
+    right:0;
+    top:0;
+    bottom:0;
+    
+    color {
+        position: relative;
+        display: inline-block;
+        height: 75px;
+        width: 75px;
+        border-radius: 3px;
+        
+        span { display: none }
+        &:hover span { display: inline; position: absolute; right: 0; bottom:0; }
+    }
+}
+
+.group {
+    position: relative;
+    zue-group-summary {
+        position: absolute;
+        text-align: right;
+        bottom: 0;
+        right: 0;
+        
+        zue-minilight {
+            height: 25px;
+            width: 17px;
+            display: inline-block;
+            &.LCT001 {
+                background: url('/img/lightbulb_25.png') no-repeat bottom right;
+            }
+        }
     }
 }

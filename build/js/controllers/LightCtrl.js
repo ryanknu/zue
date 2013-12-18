@@ -11,7 +11,7 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
     $scope.action = $routeParams.action;
     $scope.arg = $routeParams.arg;
     $scope.errorMessage = "";
-    $scope.actions = ['off', 'on', 'xy'];
+    $scope.actions = ['off', 'on', 'xy', 'ct', 'bri'];
     $scope.reqs = 0;
 
     if ( $scope.actions.indexOf($scope.action) > -1 ) {
@@ -19,6 +19,7 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
         if ( $scope.arg.substr(0, 1) == '{' || $scope.arg.substr(0, 1) == '[' ) $scope.arg = JSON.parse($scope.arg);
         if ( $scope.arg == 'off' ) $scope.arg = false;
         if ( $scope.arg == 'on' ) $scope.arg = true;
+        if ( $scope.action == 'ct' || $scope.action == 'bri') $scope.arg = JSON.parse($scope.arg);
         
         var lights = $scope.lightId.split(',');
         for ( i = 0; i < lights.length; i++ ) {

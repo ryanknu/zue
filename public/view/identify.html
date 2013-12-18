@@ -7,7 +7,7 @@
 </div>
 <div style="text-align:center">
     Group: <input ng-change="preview()" type="text" ng-model="group" /><br />
-    <span ng-repeat="group in groups">{{group}} </span>
+    <a ng-click="setGroup(group)" ng-repeat="group in groups">{{group}}</a> 
     <br />
     Name: <input ng-change="preview()" type="text" ng-model="name" /><br />
     <input type="button" value="save" ng-click="save()" />

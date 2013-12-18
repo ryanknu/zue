@@ -10,8 +10,18 @@ function IdentifyCtrl($scope, $location, $http, ZConfig, DataService, $routePara
     $scope.group = '';
     $scope.name = '';
     // TODO here
-    $scope.groups = ['testa', 'testb'];
+    $scope.aGroups = DataService.groups;
+    $scope.groups = [];
     //$scope.created = (Math.floor((new Date).getTime() / 1000)).toString(36);
+    
+    for ( var i = 0; i < $scope.aGroups.length; i++ ) {
+        $scope.groups.push( $scope.aGroups[i].name );
+    }
+    
+    $http.put(DataService.bridge + '/api/' + ZConfig.application + '/groups/0/action', {on: false})
+        .success(function() {
+            $http.put(DataService.bridge + '/api/' + ZConfig.application + '/lights/' + $scope.lightId + '/state', {on: true, effect:'colorloop'});
+        }); 
 
     // field length = 32
     // reserve 2 dividers, 6 width timestamp and 4 width timer = 20 chars max
@@ -32,6 +42,7 @@ function IdentifyCtrl($scope, $location, $http, ZConfig, DataService, $routePara
         // add on/runtime string here
         $http.put(DataService.bridge + '/api/' + ZConfig.application + '/lights/' + $scope.lightId, {name: eName})
             .success(function(data) {
+                $http.put(DataService.bridge + '/api/' + ZConfig.application + '/lights/' + $scope.lightId + '/state', {on: true, effect:'none'});
                 $scope.finishRequest();
             })
             .error(function(data) {
@@ -52,5 +63,9 @@ function IdentifyCtrl($scope, $location, $http, ZConfig, DataService, $routePara
         $scope.pgroup = $scope.group.substr(0,14);
         var maxLocalLen = $scope.nameMaxLength - $scope.pgroup.length;
         $scope.plocal = $scope.name.substr(0, maxLocalLen);
+    }
+    
+    $scope.setGroup = function(a) {
+        $scope.group = a;
     }
 }

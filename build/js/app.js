@@ -1,4 +1,4 @@
-angular.module('zue-project', ['ngRoute'])
+angular.module('zue-project', ['ngRoute', 'ZuePalette'])
 
 .config(function($routeProvider) {
     $routeProvider
@@ -46,7 +46,7 @@ angular.module('zue-project', ['ngRoute'])
 //            $rootScope.$broadcast('DataService.update', this.lights);
         },
         
-        addGroup:function(gr, lightId) {
+        addGroup:function(gr, lightId, model) {
             var found = false;
             for ( var i = 0; i < this.groups.length; i++ ) {
                 if ( this.groups[i].name == gr ) {
@@ -55,10 +55,32 @@ angular.module('zue-project', ['ngRoute'])
                 }
             }
             if ( !found ) {
-                this.groups.push({name: gr, lights:[lightId]});
+                this.groups.push({name: gr, lights:[lightId], models:[model], palette_visible:false});
             }
             else {
-                this.groups[i].lights.push(lightId);
+                if ( this.groups[i].lights.indexOf(lightId) < 0 ) {
+                    this.groups[i].lights.push(lightId);
+                    this.groups[i].models.push(model);
+                }
+            }
+        },
+        
+        closePalettes:function() {
+            for( var i = 0; i < this.lights.length; i++ ) {
+                this.lights[i].palette_visible = false;
+            }
+            for( var i = 0; i < this.groups.length; i++ ) {
+                this.groups[i].palette_visible = false;
+            }
+        },
+        
+        stickPalette:function(paletteType, index) {
+            this.closePalettes();
+            if ( paletteType == 'group' ) {
+                this.groups[index].palette_visible = true;
+            }
+            else {
+                this.lights[index].palette_visible = true;
             }
         },
         
@@ -84,7 +106,7 @@ angular.module('zue-project', ['ngRoute'])
             if ( names.length > 1 ) {
                 this.lights[parseInt(lid) - 1].zhue_group = names[0];
                 this.lights[parseInt(lid) - 1].zhue_name = names[1];
-                this.addGroup(names[0], lid);
+                this.addGroup(names[0], lid, this.lights[parseInt(lid) - 1].modelid);
             }
             else {
                 this.lights[parseInt(lid) - 1].zhue_name = names[0];
@@ -105,7 +127,20 @@ angular.module('zue-project', ['ngRoute'])
 
 .factory('ZConfig', function() {
     return {
-        application: 'ZulworksZue'
+        application: 'ZulworksZue',
+        manualBridge: '10.0.1.27',
+        whites: [
+            { name: 'The Sun',  ct: 500, hex:'#aaaaaa' },
+            { name: 'Orangey',  ct: 420, hex:'#aaaaaa' },
+            { name: 'Reading',  ct: 343, hex:'#aaaaaa' },
+            { name: 'Neutral',  ct: 213, hex:'#aaaaaa' },
+            { name: 'Energize', ct: 153, hex:'#aaaaaa' }
+        ],
+        colors:[
+            { xy: '[0.3889,0.4783]', hex:'#00ff00', name: 'Lime' },
+            { xy: '[0.6736,0.3221]', hex:'#ff0000', name: 'Red' },
+            { xy: '[0.2093,0.0643]', hex:'#a307eb', name: 'Royal' }
+        ]
     };
 });
 

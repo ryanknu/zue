@@ -16,6 +16,9 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
                         else {
                             $scope.associated(data);
                         }
+                    })
+                    .error(function(data) {
+                        $scope.noBridge();
                     });
             }
             else {
@@ -23,7 +26,8 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
             }
         })        
         .error(function(data) {
-            $scope.noBridgeFound = "We were not able to detect that this address proxies to a bridge. Please configure this and try again.";
+            // TODO: manual bridge mode
+            $scope.noBridgeFound = "You are not connected to the Internet. This is a problem because manual bridge mode is not yet supported.";
         });
     }
     
@@ -46,6 +50,7 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
             if ( stri in lights ) {
                 var l = lights[stri];
                 lights[stri].id = i;
+                lights[stri].palette_visible = false;
                 DataService.addLight(lights[stri]);
             }
             else {
