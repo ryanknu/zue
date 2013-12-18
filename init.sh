@@ -12,6 +12,6 @@ curl -s -O https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 echo '[**** ]';
 curl -s -O https://raw.github.com/Q42/hue-color-converter/master/colorconverter.js
 echo '[*****]';
-cat angular.min.js angular-resource.min.js angular-route.min.js jquery.min.js colorconverter.js > vendor_bundle.js
+cat angular.min.js angular-route.min.js jquery.min.js colorconverter.js > vendor_bundle.js
 
 cd ../../
