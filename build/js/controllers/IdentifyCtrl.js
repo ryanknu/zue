@@ -30,9 +30,6 @@ function IdentifyCtrl($scope, $location, $http, ZConfig, DataService, $routePara
     // group name + local name cannot exceed 20 chars
     $scope.nameMaxLength = 32 - 6 - 4 - 2;
     
-    // turn off all lights but this one....
-    // would be helpful :)
-    
     $scope.save = function() {
         var groupName = $scope.group.substr(0,14);
         var maxLocalLen = $scope.nameMaxLength - groupName.length;

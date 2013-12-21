@@ -1,20 +1,69 @@
-body {
-    max-width: 1000px;
+@font-face {
+    font-family: Bariol;
+    src: url('/font/Bariol_Light.otf');
+}
+
+html, body {
+	height: 100%;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+}
+
+a {
+    color: #c8c8c8;
+//    text-decoration: none;
+}
+
+body {
     margin: auto;
-    font-family: 'Alegreya Sans', sans-serif;
-    font-weight: 300;
+    font-family: 'Bariol', 'Helvetica Neue', 'Helvetica', 'Ariel', sans-serif;
+    font-weight: lighter;
+    background: url('/img/background_02.png') center center no-repeat;
+}
+sticky {
+	font-size: 1.9em;
+	color: #c8c8c8;
+	background-color: #14212f;
+	width: 100%;
+	display: block;
+	padding: 5px 0 10px 20px;
+}
+light-name {
+	font-weight: lighter;
+	color: #c8c8c8;
+	display: block;
+	text-align: center;
+	font-size: 22px;
 }
 
-h1 {
-    font-size: 2.2em;
-    font-weight: 700;
-    margin: 0;
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(360deg); }
+    to { -webkit-transform: rotate(0deg); }
 }
 
-h2 {
-    font-size: 1.2em;
-    font-weight: 400;
-    margin: 0;
+spinner {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    display: table;
+    
+    centered {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    
+        canvas.spinner {
+            height: 48px;
+            width: 48px;
+            -webkit-animation-name: spin; 
+            -webkit-animation-duration: 2000ms;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+        }
+    }
 }
-

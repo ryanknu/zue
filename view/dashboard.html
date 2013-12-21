@@ -1,15 +1,23 @@
 <dashboard>
+    <div id="group-all"
+        style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
+        class="on light group">
+        <light-name>All Lights</light-name>
+        
+        <a href="#/zue/light/{{allLights}}/on/off">Turn Off</a>
+        <a href="#/zue/light/{{allLights}}/on/on">Turn On</a>
+    </div>
     <div id="group-{{group.name}}"
-        style="border-color: {{group.color}}"
+        style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
         ng-click="showGroupPalette($index)"
         class="on light group" ng-repeat="group in groups track by $index">
-        <h2>{{group.name}}</h2>
+        <light-name>{{group.name}}</light-name>
         
         <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
         <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
 
         <zue-group-summary>
-            <zue-minilight ng-repeat="lc in group.models track by $index" class="{{lc}}" />
+            <zue-minilight ng-repeat="lc in group.colors track by $index" style="background-color:{{lc}};width:{{100 / group.colors.length}}%;" />
         </zue-group-summary>
 
         <zue-group-palette ng-show="group.palette_visible" lights="group.lights.join(',')" />
@@ -20,23 +28,20 @@
     <div></div>
     <dashboard-cell id="light-{{light.id}}"
         nstyle="border-color: {{light.zhue_color.hex}}"
-        style="border-color: {{light.zhue_groupcolor}}"
+        style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,{{light.zhue_color.hex}} 100%);border:none;"
+        dstyle="border-color: {{light.zhue_groupcolor}}"
         ng-click="showPalette($index)"
         ng-class="{on: light.state.on}" class="{{light.modelid}}" ng-repeat="light in lights track by $index">
+        <light-name>{{light.zhue_name}}</light-name>
         <div style="float:right">
             <a href="#/zue/light/{{light.id}}/on/on" ng-show="{{!light.state.on}}">Off</a>
             <a href="#/zue/light/{{light.id}}/on/off" ng-show="{{light.state.on}}">On</a>
         </div>
-        <h2>{{light.zhue_name}}</h2>
         <div class="a-ul">in {{light.zhue_group}}</div>
         
         <zue-palette ng-show="light.palette_visible" light="light" />
     </dashboard-cell>
     <div>
         {{testLight}}
-    </div>
-    <div>
-        <a href="#/zue/light/{{allLights}}/on/off">All Off</a>
-        <a href="#/zue/light/{{allLights}}/on/on">All On</a>
     </div>
 </dashboard>
