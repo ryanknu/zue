@@ -24,6 +24,7 @@ uglifyjs js/controllers/LoadingCtrl.js   \
          js/controllers/AssociateCtrl.js \
          js/controllers/LightCtrl.js     \
          js/controllers/IdentifyCtrl.js  \
+         js/controllers/ReadCtrl.js \
          js/app.js \
          js/directives/Palette.js \
          \

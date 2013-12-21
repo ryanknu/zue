@@ -212,6 +212,42 @@ function IdentifyCtrl($scope, $location, $http, ZConfig, DataService, $routePara
     };
 }
 
+function ReadCtrl($scope, $http, ZConfig, DataService) {
+    $scope.error = "";
+    $scope.string = "";
+    $scope.lights = [];
+    $http.get(DataService.bridge + "/api/" + ZConfig.application).success(function(data) {
+        if (typeof data === "object") {
+            $scope.associated(data);
+        } else {
+            $scope.associated(data);
+        }
+    }).error(function(data) {
+        $scope.error = "Something went wrong. Cannot read lights.";
+    });
+    $scope.associated = function(data) {
+        var o = [];
+        $scope.string = "what up";
+        var lights = data.lights;
+        for (var i = 1; i < 1024; i++) {
+            var stri = i + "";
+            if (stri in lights) {
+                var l = lights[stri];
+                $scope.lights.push(l);
+                o.push({
+                    xy: l.state.xy || "error",
+                    hex: "#aaa",
+                    name: "blah",
+                    wtext: true
+                });
+            } else {
+                i += 1024;
+            }
+        }
+        $scope.string = JSON.stringify(o).replace("},", "},\n");
+    };
+}
+
 angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($routeProvider) {
     $routeProvider.when("/", {
         controller: "LoadingCtrl",
@@ -228,8 +264,11 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
     }).when("/zue/identify/:lightId", {
         controller: "IdentifyCtrl",
         templateUrl: "view/identify.html"
+    }).when("/zue/read", {
+        controller: "ReadCtrl",
+        templateUrl: "view/read.html"
     }).otherwise({
-        redirectTo: "/"
+        redirectTo: "/zue"
     });
 }).service("DataService", function($rootScope) {
     return {
@@ -246,7 +285,7 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
             this.lights[parseInt(lid) - 1] = nl;
             this.fixColor(lid);
         },
-        addGroup: function(gr, lightId, model) {
+        addGroup: function(gr, lightId, col) {
             var found = false;
             for (var i = 0; i < this.groups.length; i++) {
                 if (this.groups[i].name == gr) {
@@ -258,13 +297,13 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
                 this.groups.push({
                     name: gr,
                     lights: [ lightId ],
-                    models: [ model ],
+                    colors: [ col ],
                     palette_visible: false
                 });
             } else {
                 if (this.groups[i].lights.indexOf(lightId) < 0) {
                     this.groups[i].lights.push(lightId);
-                    this.groups[i].models.push(model);
+                    this.groups[i].colors.push(col);
                 }
             }
         },
@@ -289,12 +328,17 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
             var rgb = colorConverter.xyBriToRgb({
                 x: l.state.xy[0],
                 y: l.state.xy[1],
-                bri: l.state.bri / 255
+                bri: 1
             });
             this.lights[parseInt(lid) - 1].zhue_last_turned_on = "Never";
             this.lights[parseInt(lid) - 1].zhue_seconds_on = 0;
             this.lights[parseInt(lid) - 1].zhue_name = "No name";
             this.lights[parseInt(lid) - 1].zhue_group = "No group";
+            this.lights[parseInt(lid) - 1].zhue_color = {};
+            this.lights[parseInt(lid) - 1].zhue_color.hex = "#" + colorConverter.rgbToHexString(rgb);
+            this.lights[parseInt(lid) - 1].zhue_color.r = rgb.r;
+            this.lights[parseInt(lid) - 1].zhue_color.g = rgb.g;
+            this.lights[parseInt(lid) - 1].zhue_color.b = rgb.b;
             var names = l.name.split("/");
             if (names.length > 2) {
                 var p = names[2].match(/.{1,6}/g);
@@ -304,15 +348,10 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
             if (names.length > 1) {
                 this.lights[parseInt(lid) - 1].zhue_group = names[0];
                 this.lights[parseInt(lid) - 1].zhue_name = names[1];
-                this.addGroup(names[0], lid, this.lights[parseInt(lid) - 1].modelid);
+                this.addGroup(names[0], lid, this.lights[parseInt(lid) - 1].zhue_color.hex);
             } else {
                 this.lights[parseInt(lid) - 1].zhue_name = names[0];
             }
-            this.lights[parseInt(lid) - 1].zhue_color = {};
-            this.lights[parseInt(lid) - 1].zhue_color.hex = "#" + colorConverter.rgbToHexString(rgb);
-            this.lights[parseInt(lid) - 1].zhue_color.r = rgb.r;
-            this.lights[parseInt(lid) - 1].zhue_color.g = rgb.g;
-            this.lights[parseInt(lid) - 1].zhue_color.b = rgb.b;
         },
         setBridge: function(b) {
             this.bridge = "http://" + b;
@@ -346,14 +385,17 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
         colors: [ {
             xy: "[0.3889,0.4783]",
             hex: "#00ff00",
+            wtext: true,
             name: "Lime"
         }, {
             xy: "[0.6736,0.3221]",
             hex: "#ff0000",
+            wtext: true,
             name: "Red"
         }, {
             xy: "[0.2093,0.0643]",
             hex: "#a307eb",
+            wtext: true,
             name: "Royal"
         } ]
     };
@@ -381,6 +423,27 @@ angular.module("ZuePalette", []).directive("zueGroupPalette", function(ZConfig) 
         link: function(scope, element, attr) {
             scope.colors = ZConfig.colors;
             scope.whites = ZConfig.whites;
+        }
+    };
+}).directive("spinner", function($timeout) {
+    return {
+        restrict: "E",
+        templateUrl: "view/spinner.html",
+        link: function(scope, element, attr) {
+            $timeout(function() {
+                var bWidth = 10;
+                var bHeight = 20;
+                var radius = 20;
+                var bars = 3;
+                var c = document.getElementById("spinnerc");
+                var ctx = c.getContext("2d");
+                ctx.fillStyle = "#FFF";
+                ctx.translate(24, 24);
+                for (var i = 0; i < bars; i++) {
+                    ctx.fillRect(0, 0, bWidth, bHeight);
+                    ctx.rotate(Math.PI / 180 * (360 / bars));
+                }
+            }, 0);
         }
     };
 });
