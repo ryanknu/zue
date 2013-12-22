@@ -1,30 +1,32 @@
 <dashboard>
-    <div id="group-all"
-        style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
-        class="on light group">
-        <light-name>All Lights</light-name>
+<!--    <div>-->
+        <dashboard-cell id="group-all"
+            style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
+            class="on light group">
+            <light-name>All Lights</light-name>
         
-        <a href="#/zue/light/{{allLights}}/on/off">Turn Off</a>
-        <a href="#/zue/light/{{allLights}}/on/on">Turn On</a>
-    </div>
-    <div id="group-{{group.name}}"
-        style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
-        ng-click="showGroupPalette($index)"
-        class="on light group" ng-repeat="group in groups track by $index">
-        <light-name>{{group.name}}</light-name>
+            <a href="#/zue/light/{{allLights}}/on/off">Turn Off</a>
+            <a href="#/zue/light/{{allLights}}/on/on">Turn On</a>
+        </dashboard-cell>
+        <dashboard-cell id="group-{{group.name}}"
+            style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
+            ng-click="showGroupPalette($index)"
+            class="on light group" ng-repeat="group in groups track by $index">
+            <light-name>{{group.name}}</light-name>
         
-        <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
-        <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
+            <a href="#/zue/light/{{group.lights.join(',')}}/on/off">Turn Off</a>
+            <a href="#/zue/light/{{group.lights.join(',')}}/on/on">Turn On</a>
 
-        <zue-group-summary>
-            <zue-minilight ng-repeat="lc in group.colors track by $index" style="background-color:{{lc}};width:{{100 / group.colors.length}}%;" />
-        </zue-group-summary>
+            <zue-group-summary>
+                <zue-minilight ng-repeat="lc in group.colors track by $index" style="background-color:{{lc}};width:{{100 / group.colors.length}}%;" />
+            </zue-group-summary>
 
-        <zue-group-palette ng-show="group.palette_visible" lights="group.lights.join(',')" />
+            <zue-group-palette ng-show="group.palette_visible" lights="group.lights.join(',')" />
         
-        Apparently, nothing shows up after the directive #angularbugs?
+            Apparently, nothing shows up after the directive #angularbugs?
         
-    </div>
+        </dashboard-cell>
+<!--    </div>-->
     <div></div>
     <dashboard-cell id="light-{{light.id}}"
         nstyle="border-color: {{light.zhue_color.hex}}"
@@ -39,6 +41,7 @@
         </div>
         <div class="a-ul">in {{light.zhue_group}}</div>
         
+        <zue-palette-collapser ng-show="light.palette_visible" ng-click="clearAllPalettes()"  stop-event='click'></zue-palette-collapser>
         <zue-palette ng-show="light.palette_visible" light="light" />
     </dashboard-cell>
     <div>

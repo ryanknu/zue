@@ -1,4 +1,5 @@
-angular.module('zue-project', ['ngRoute', 'ZuePalette'])
+angular.module('$zue.directives', []);
+angular.module('zue-project', ['ngRoute', '$zue.directives'])
 
 .config(function($routeProvider) {
     $routeProvider
@@ -76,6 +77,7 @@ angular.module('zue-project', ['ngRoute', 'ZuePalette'])
             for( var i = 0; i < this.groups.length; i++ ) {
                 this.groups[i].palette_visible = false;
             }
+            $rootScope.$broadcast('DataService.closePalettes');
         },
         
         stickPalette:function(paletteType, index) {
@@ -142,9 +144,16 @@ angular.module('zue-project', ['ngRoute', 'ZuePalette'])
             { name: 'Energize', ct: 153, hex:'#aaaaaa' }
         ],
         colors:[
+            { xy: '[0.2093,0.0643]', hex:'#a307eb', wtext:true, name: 'Royal' },
+            { xy: '[0.2476,0.0856]', hex:'#b900ff', wtext:false, name: 'Electric Violet' },
+            { xy: '[0.1778,0.0603]', hex:'#3c07fa', wtext:false, name: 'Blue' },
             { xy: '[0.3889,0.4783]', hex:'#00ff00', wtext:true, name: 'Lime' },
+            { xy: '[0.6161,0.3297]', hex:'#e88770', wtext:true, name: 'Salmon' },
+            { xy: '[0.5292,0.2419]', hex:'#ea478b', wtext:false, name: 'Fuscia' },
+            { xy: '[0.3758,0.1568]', hex:'#fe016b', wtext:true, name: 'Super Pink' },
             { xy: '[0.6736,0.3221]', hex:'#ff0000', wtext:true, name: 'Red' },
-            { xy: '[0.2093,0.0643]', hex:'#a307eb', wtext:true, name: 'Royal' }
+            { xy: '[0.6195,0.3617]', hex:'#ec9a36', wtext:true, name: 'Orange' },
+            { xy: '[0.5337,0.4248]', hex:'#ffdd01', wtext:true, name: 'Marigold' },
         ]
     };
 });

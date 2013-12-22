@@ -1,9 +1,14 @@
+dashboard {
+    display: block;
+    padding: 40px 0 0 40px;
+}
+
 dashboard-cell,.light {
     display: inline-block;
     height: 136px;
     width: 136px;
     border-radius: 8px;
-    margin: 0 10px 10px 0;
+    margin: 0 15px 35px 0;
     border: 2px dashed #999;
     padding: 5px;
     
@@ -75,6 +80,7 @@ zue-group-palette,zue-palette {
         span { display: none }
         &:hover span { display: inline; position: absolute; right: 0; bottom:0; }
     }
+}
     
     zue-palette-collapser {
         cursor: pointer;
@@ -89,15 +95,15 @@ zue-group-palette,zue-palette {
             background-color: #777;
         }
     }
-}
 
 .group {
     position: relative;
     zue-group-summary {
         position: absolute;
-        bottom: 0;
+        bottom: 15px;
         width: 100%;
         display: table;
+        margin:auto;
         
         zue-minilight {
             display: table-cell;
@@ -114,20 +120,34 @@ zue-group-palette,zue-palette {
 
 @media only screen 
 and (min-width : 320px) 
-and (max-width : 568px) { 
+and (max-width : 568px) {
+    dashboard {
+        padding: 0;
+    } 
     
     dashboard-cell,.light {
+        margin: 0 0 10px 0;
         width: 96%;
         padding: 2%;
         height: 55px;
     }
     
     zue-group-palette,zue-palette {
-        width: 100%;
+        width: 95%;
     
         color {
             height: 50px;
             width: 50px;
+        }
+    }
+    zue-palette-collapser {
+        left: 0;
+        width:5%;
+    }
+    
+    .group {
+        zue-group-summary {
+            bottom: 7px;
         }
     }
     

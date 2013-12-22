@@ -57,6 +57,7 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig) {
     $scope.groupColors = [ "#ff0000", "#00ff00", "#0000ff" ];
     $scope.whites = ZConfig.whites;
     $scope.colors = ZConfig.colors;
+    $scope.testLight = "";
     $http.put(DataService.bridge + "/api/" + ZConfig.application + "/groups/0/action", {
         effect: "none"
     });
@@ -73,8 +74,8 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig) {
     if (!$scope.lights.length) {
         $location.path("/");
     }
-    $scope.$on("DataService.update", function(event, lights) {
-        $scope.lights = lights;
+    $scope.$on("DataService.closePalettes", function(event) {
+        $scope.clearAllPalettes();
     });
     $scope.clearAllPalettes = function() {
         for (var i = 0; i < $scope.lights.length; i++) {
@@ -85,14 +86,18 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig) {
         }
     };
     $scope.showPalette = function(t_i) {
-        $scope.clearAllPalettes();
-        $scope.lights[t_i].palette_visible = true;
-        DataService.stickPalette("light", t_i);
+        if (!$scope.lights[t_i].palette_visible) {
+            $scope.clearAllPalettes();
+            $scope.lights[t_i].palette_visible = true;
+            DataService.stickPalette("light", t_i);
+        }
     };
     $scope.showGroupPalette = function(t_i) {
-        $scope.clearAllPalettes();
-        $scope.groups[t_i].palette_visible = true;
-        DataService.stickPalette("group", t_i);
+        if (!$scope.groups[t_i].palette_visible) {
+            $scope.clearAllPalettes();
+            $scope.groups[t_i].palette_visible = true;
+            DataService.stickPalette("group", t_i);
+        }
     };
 }
 
@@ -248,7 +253,16 @@ function ReadCtrl($scope, $http, ZConfig, DataService) {
     };
 }
 
-angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($routeProvider) {
+function PaletteCtrl($scope, $http, ZConfig, DataService) {
+    $scope.color = "";
+    $scope.close = function() {
+        DataService.closePalettes();
+    };
+}
+
+angular.module("$zue.directives", []);
+
+angular.module("zue-project", [ "ngRoute", "$zue.directives" ]).config(function($routeProvider) {
     $routeProvider.when("/", {
         controller: "LoadingCtrl",
         templateUrl: "view/loading.html"
@@ -314,6 +328,7 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
             for (var i = 0; i < this.groups.length; i++) {
                 this.groups[i].palette_visible = false;
             }
+            $rootScope.$broadcast("DataService.closePalettes");
         },
         stickPalette: function(paletteType, index) {
             this.closePalettes();
@@ -383,49 +398,101 @@ angular.module("zue-project", [ "ngRoute", "ZuePalette" ]).config(function($rout
             hex: "#aaaaaa"
         } ],
         colors: [ {
+            xy: "[0.2093,0.0643]",
+            hex: "#a307eb",
+            wtext: true,
+            name: "Royal"
+        }, {
+            xy: "[0.2476,0.0856]",
+            hex: "#b900ff",
+            wtext: false,
+            name: "Electric Violet"
+        }, {
+            xy: "[0.1778,0.0603]",
+            hex: "#3c07fa",
+            wtext: false,
+            name: "Blue"
+        }, {
             xy: "[0.3889,0.4783]",
             hex: "#00ff00",
             wtext: true,
             name: "Lime"
+        }, {
+            xy: "[0.6161,0.3297]",
+            hex: "#e88770",
+            wtext: true,
+            name: "Salmon"
+        }, {
+            xy: "[0.5292,0.2419]",
+            hex: "#ea478b",
+            wtext: false,
+            name: "Fuscia"
+        }, {
+            xy: "[0.3758,0.1568]",
+            hex: "#fe016b",
+            wtext: true,
+            name: "Super Pink"
         }, {
             xy: "[0.6736,0.3221]",
             hex: "#ff0000",
             wtext: true,
             name: "Red"
         }, {
-            xy: "[0.2093,0.0643]",
-            hex: "#a307eb",
+            xy: "[0.6195,0.3617]",
+            hex: "#ec9a36",
             wtext: true,
-            name: "Royal"
+            name: "Orange"
+        }, {
+            xy: "[0.5337,0.4248]",
+            hex: "#ffdd01",
+            wtext: true,
+            name: "Marigold"
         } ]
     };
 });
 
-angular.module("ZuePalette", []).directive("zueGroupPalette", function(ZConfig) {
+angular.module("$zue.directives").directive("stopEvent", function() {
+    return {
+        restrict: "A",
+        link: function(scope, element, attr) {
+            element.bind(attr.stopEvent, function(e) {
+                e.stopPropagation();
+            });
+        }
+    };
+});
+
+angular.module("$zue.directives").directive("zueGroupPalette", function(ZConfig) {
     return {
         restrict: "E",
         templateUrl: "view/group-palette.html",
         scope: {
-            lights: "="
+            lights: "=",
+            eventHandler: "&ngClick"
         },
         link: function(scope, element, attr) {
             scope.colors = ZConfig.colors;
             scope.whites = ZConfig.whites;
         }
     };
-}).directive("zuePalette", function(ZConfig) {
+});
+
+angular.module("$zue.directives").directive("zuePalette", function(ZConfig) {
     return {
         restrict: "E",
         templateUrl: "view/palette.html",
         scope: {
-            light: "="
+            light: "=",
+            eventHandler: "&ngClick"
         },
         link: function(scope, element, attr) {
             scope.colors = ZConfig.colors;
             scope.whites = ZConfig.whites;
         }
     };
-}).directive("spinner", function($timeout) {
+});
+
+angular.module("$zue.directives").directive("spinner", function($timeout) {
     return {
         restrict: "E",
         templateUrl: "view/spinner.html",

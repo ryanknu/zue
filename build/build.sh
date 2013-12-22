@@ -24,9 +24,12 @@ uglifyjs js/controllers/LoadingCtrl.js   \
          js/controllers/AssociateCtrl.js \
          js/controllers/LightCtrl.js     \
          js/controllers/IdentifyCtrl.js  \
-         js/controllers/ReadCtrl.js \
+         js/controllers/ReadCtrl.js      \
+         js/controllers/PaletteCtrl.js   \
          js/app.js \
+         js/directives/StopEvent.js \
          js/directives/Palette.js \
+         js/directives/Spinner.js \
          \
          -b -o out/js/zue.js
          
