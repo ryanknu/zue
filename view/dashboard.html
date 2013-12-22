@@ -21,6 +21,7 @@
                 <zue-minilight ng-repeat="lc in group.colors track by $index" style="background-color:{{lc}};width:{{100 / group.colors.length}}%;" />
             </zue-group-summary>
 
+            <zue-palette-collapser ng-show="group.palette_visible" ng-click="clearAllPalettes()"  stop-event='click'></zue-palette-collapser>
             <zue-group-palette ng-show="group.palette_visible" lights="group.lights.join(',')" />
         
             Apparently, nothing shows up after the directive #angularbugs?
