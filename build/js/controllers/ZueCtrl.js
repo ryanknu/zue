@@ -9,6 +9,7 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.groupColors = ['#ff0000', '#00ff00', '#0000ff'];
     $scope.whites = ZConfig.whites;
     $scope.colors = ZConfig.colors;
+    $scope.testLight = '';
     
     $http.put(DataService.bridge + '/api/' + ZConfig.application + '/groups/0/action', {effect:'none'});
     
@@ -29,8 +30,8 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
         $location.path('/'); // go back to loading
     }
     
-    $scope.$on('DataService.update', function(event, lights) {
-        $scope.lights = lights;
+    $scope.$on('DataService.closePalettes', function(event) {
+        $scope.clearAllPalettes();
     })
     
     $scope.clearAllPalettes = function() {
@@ -43,15 +44,19 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     }
     
     $scope.showPalette = function(t_i) {
-        $scope.clearAllPalettes();
-        $scope.lights[t_i].palette_visible = true;
-        DataService.stickPalette('light', t_i);
+        if ( !$scope.lights[t_i].palette_visible ) {
+            $scope.clearAllPalettes();
+            $scope.lights[t_i].palette_visible = true;
+            DataService.stickPalette('light', t_i);
+        }
     }
     
     $scope.showGroupPalette = function(t_i) {
-        $scope.clearAllPalettes();
-        $scope.groups[t_i].palette_visible = true;
-        DataService.stickPalette('group', t_i);
+        if ( !$scope.groups[t_i].palette_visible ) {
+            $scope.clearAllPalettes();
+            $scope.groups[t_i].palette_visible = true;
+            DataService.stickPalette('group', t_i);
+        }
     }
     
     //$scope.toggleLight = function($event, light_id) {

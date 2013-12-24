@@ -6,13 +6,17 @@ Read Lights - tool for creating color palette config from current light settings
     <hr />
 
     {{light.name}}<br />
-    Name: <input type="text" /><br />
-    Color: <input type="color" /><br />
-    Draw name in black <input type="checkbox" />
+    Name: <input type="text" ng-model="bjorn" /><br />
+    Color: <input type="color" value="#00f905" ng-model="col" /><br />
+    Draw name in black <input type="checkbox" ng-model="black" />
     
     <br />
     <br />
+    <!--
+         { xy: '[0.3889,0.4783]', hex:'#00ff00', wtext:true, name: 'Lime' },
+    -->
+    <pre>{ xy: '{{light.state.xy}}', hex:'{{col}}', wtext:{{black}}, name: '{{bjorn}}' },</pre>
 </div>
 
-<input type="button" value="update" />
+<input type="button" value="update" onclick="" />
 
