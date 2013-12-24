@@ -17,7 +17,7 @@ body {
   margin: auto;
   font-family: 'Bariol', 'Helvetica Neue', 'Helvetica', 'Ariel', sans-serif;
   font-weight: lighter;
-  background: url('/img/background_02.png') center center no-repeat;
+  background: url('https://s3.amazonaws.com/zue/background_02.png') center center no-repeat;
 }
 sticky {
   font-size: 1.9em;
@@ -173,7 +173,7 @@ zue-palette-collapser {
   right: 400px;
   top: 48px;
   bottom: 0;
-  background: #666666 url('/img/th_arrow.png') no-repeat center center;
+  background: #666666 url('https://s3.amazonaws.com/zue/th_arrow.png') no-repeat center center;
 }
 zue-palette-collapser:hover {
   background-color: #777;
