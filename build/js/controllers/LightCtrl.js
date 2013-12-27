@@ -10,9 +10,12 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
     $scope.lightId = $routeParams.lightId;
     $scope.action = $routeParams.action;
     $scope.arg = $routeParams.arg;
-    $scope.errorMessage = "";
     $scope.actions = ['off', 'on', 'xy', 'ct', 'bri'];
     $scope.reqs = 0;
+
+    // parameters for showing errors    
+    $scope.showReload = false;
+    $scope.reloadHref = '';
 
     if ( $scope.actions.indexOf($scope.action) > -1 ) {
         // cast types to other types
@@ -28,13 +31,15 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
             $scope.newLight.state[$scope.action] = $scope.arg;
             var obj = {};
             obj[$scope.action] = $scope.arg;
-            $http.put(DataService.bridge + '/api/' + ZConfig.application + '/lights/' + lights[i] + '/state',
+            var r = ( lights[i] != 'all' ) ? '/lights/' + lights[i] + '/state' : '/groups/0/action';
+            $http.put(DataService.bridge + '/api/' + ZConfig.application + r,
                 JSON.stringify(obj))
                 .success(function(data) {
                     $scope.goHome();
                 })
                 .error(function(data) {
-                    $scope.errorMessage = "An error occurred while trying to update the light.";
+                    $scope.showReload = true;
+                    $scope.reloadHref = location.hash;
                 });
         }
     }

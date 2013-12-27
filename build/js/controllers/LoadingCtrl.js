@@ -57,6 +57,7 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService)
                 i += 1024;
             }
         }
+        DataService.setSwUpdate(data.config.swversion, data.config.swupdate);
         $location.path('/zue');
     }
 }

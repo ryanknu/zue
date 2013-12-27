@@ -10,6 +10,7 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig)
     $scope.whites = ZConfig.whites;
     $scope.colors = ZConfig.colors;
     $scope.testLight = '';
+    $scope.software = DataService.software;
     
     $http.put(DataService.bridge + '/api/' + ZConfig.application + '/groups/0/action', {effect:'none'});
     
