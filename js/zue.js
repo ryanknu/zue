@@ -43,6 +43,7 @@ function LoadingCtrl($scope, $location, $http, ZConfig, DataService) {
                 i += 1024;
             }
         }
+        DataService.setSwUpdate(data.config.swversion, data.config.swupdate);
         $location.path("/zue");
     };
 }
@@ -58,6 +59,7 @@ function ZueCtrl($scope, $location, $http, DataService, ZConfig) {
     $scope.whites = ZConfig.whites;
     $scope.colors = ZConfig.colors;
     $scope.testLight = "";
+    $scope.software = DataService.software;
     $http.put(DataService.bridge + "/api/" + ZConfig.application + "/groups/0/action", {
         effect: "none"
     });
@@ -130,9 +132,10 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
     $scope.lightId = $routeParams.lightId;
     $scope.action = $routeParams.action;
     $scope.arg = $routeParams.arg;
-    $scope.errorMessage = "";
     $scope.actions = [ "off", "on", "xy", "ct", "bri" ];
     $scope.reqs = 0;
+    $scope.showReload = false;
+    $scope.reloadHref = "";
     if ($scope.actions.indexOf($scope.action) > -1) {
         if ($scope.arg.substr(0, 1) == "{" || $scope.arg.substr(0, 1) == "[") $scope.arg = JSON.parse($scope.arg);
         if ($scope.arg == "off") $scope.arg = false;
@@ -145,10 +148,12 @@ function LightCtrl($scope, $location, $http, ZConfig, DataService, $routeParams)
             $scope.newLight.state[$scope.action] = $scope.arg;
             var obj = {};
             obj[$scope.action] = $scope.arg;
-            $http.put(DataService.bridge + "/api/" + ZConfig.application + "/lights/" + lights[i] + "/state", JSON.stringify(obj)).success(function(data) {
+            var r = lights[i] != "all" ? "/lights/" + lights[i] + "/state" : "/groups/0/action";
+            $http.put(DataService.bridge + "/api/" + ZConfig.application + r, JSON.stringify(obj)).success(function(data) {
                 $scope.goHome();
             }).error(function(data) {
-                $scope.errorMessage = "An error occurred while trying to update the light.";
+                $scope.showReload = true;
+                $scope.reloadHref = location.hash;
             });
         }
     }
@@ -260,6 +265,25 @@ function PaletteCtrl($scope, $http, ZConfig, DataService) {
     };
 }
 
+function UpdateCtrl($scope, $location, $http, ZConfig, DataService) {
+    $scope.hasError = false;
+    $http.put(DataService.bridge + "/api/" + ZConfig.application + "/config", {
+        swupdate: {
+            updatestate: 3
+        }
+    }).success(function(data) {
+        $scope.s();
+    }).error(function(data) {
+        $scope.e();
+    });
+    $scope.s = function() {
+        $location.path("/zue");
+    };
+    $scope.e = function() {
+        $scope.hasError = true;
+    };
+}
+
 angular.module("$zue.directives", []);
 
 angular.module("zue-project", [ "ngRoute", "$zue.directives" ]).config(function($routeProvider) {
@@ -281,6 +305,11 @@ angular.module("zue-project", [ "ngRoute", "$zue.directives" ]).config(function(
     }).when("/zue/read", {
         controller: "ReadCtrl",
         templateUrl: "view/read.html"
+    }).when("/zue/install", {
+        templateUrl: "view/install.html"
+    }).when("/zue/update", {
+        controller: "UpdateCtrl",
+        templateUrl: "view/update.html"
     }).otherwise({
         redirectTo: "/zue"
     });
@@ -291,9 +320,23 @@ angular.module("zue-project", [ "ngRoute", "$zue.directives" ]).config(function(
         schedules: [],
         config: {},
         bridge: "",
+        software: {},
         addLight: function(l) {
             this.lights[parseInt(l.id) - 1] = l;
             this.fixColor(l.id);
+        },
+        setSwUpdate: function(v, o) {
+            this.software = o;
+            this.software.version = v;
+            if (o.updatestate == 1) {
+                this.software.updateState = 'Update available: "' + o.text + '". Bridge will download it automatically.';
+            } else if (o.updatestate == 2) {
+                this.software.updateState = 'Update ready: "' + o.text + '".';
+            } else if (o.updatestate == 3) {
+                this.software.updateState = 'Bridge updating: "' + o.text + '".';
+            } else {
+                this.software.updateState = "No updates available.";
+            }
         },
         updateLight: function(lid, nl) {
             this.lights[parseInt(lid) - 1] = nl;

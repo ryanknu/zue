@@ -3,6 +3,9 @@
     <p>Action: <pre>{{action}}</pre></p>
 </div>
 -->
-<div>{{errorMessage}}</div>
+<div ng-show="showReload">
+    <h2>An error occurred while trying to update the light.</h2>
+    <a href="{{reloadHref}}">Click here to retry.</a>
+</div>
 
-<spinner />
+<spinner ng-show="!showReload" />

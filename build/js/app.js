@@ -28,6 +28,13 @@ angular.module('zue-project', ['ngRoute', '$zue.directives'])
             controller: 'ReadCtrl',
             templateUrl: 'view/read.html'
         })
+        .when('/zue/install', {
+            templateUrl: 'view/install.html'
+        })
+        .when('/zue/update', {
+            controller: 'UpdateCtrl',
+            templateUrl: 'view/update.html'
+        })
         .otherwise({ redirectTo: '/zue' });
 })
 
@@ -38,11 +45,29 @@ angular.module('zue-project', ['ngRoute', '$zue.directives'])
         schedules: [],
         config: {},
         bridge: '',
+        software: {},
         
         addLight:function(l) {
             this.lights[parseInt(l.id) - 1] = l;
             this.fixColor(l.id);
 //            $rootScope.$broadcast('DataService.update', this.lights);
+        },
+        
+        setSwUpdate:function(v, o) {
+            this.software = o;
+            this.software.version = v;
+            if ( o.updatestate == 1 ) {
+                this.software.updateState = 'Update available: "' + o.text + '". Bridge will download it automatically.';
+            }
+            else if ( o.updatestate == 2 ) {
+                this.software.updateState = 'Update ready: "' + o.text + '".';
+            }
+            else if ( o.updatestate == 3 ) {
+                this.software.updateState = 'Bridge updating: "' + o.text + '".';
+            }
+            else {
+                this.software.updateState = 'No updates available.';
+            }
         },
         
         updateLight:function(lid, nl) {

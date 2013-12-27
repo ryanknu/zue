@@ -7,8 +7,9 @@
         
             <a href="#/zue/light/{{allLights}}/on/off">Turn Off</a>
             <a href="#/zue/light/{{allLights}}/on/on">Turn On</a>
-        </dashboard-cell>
-        <dashboard-cell id="group-{{group.name}}"
+        </dashboard-cell><!-- remove space between
+        
+        --><dashboard-cell id="group-{{group.name}}"
             style="background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,#fff 100%);border:none;"
             ng-click="showGroupPalette($index)"
             class="on light group" ng-repeat="group in groups track by $index">
@@ -47,5 +48,9 @@
     </dashboard-cell>
     <div>
         {{testLight}}
+    </div>
+    <div>
+        Software Version: {{software.version}} - {{software.updateState}}
+        <div ng-show="software.updatestate==2"><a href="#/zue/update">Apply update.</a></div>
     </div>
 </dashboard>

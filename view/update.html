@@ -1,0 +1,11 @@
+<!--<div style="text-align:center">
+    <p>Light ID: <pre>{{lightId}}</pre></p>
+    <p>Action: <pre>{{action}}</pre></p>
+</div>
+-->
+<div ng-show="hasError">
+    <h2>An error occurred while trying to start software update.</h2>
+    <a href="#/zue">Click here to return to dashboard.</a>
+</div>
+
+<spinner ng-show="!hasError" />

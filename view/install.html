@@ -1,0 +1,18 @@
+
+<h2>Install Zue</h2>
+<p>Installing Zue on a local server is easy and ensures access to your lights
+even when your Internet is not online.</p>
+
+<p>On Raspbian (commands vary slightly on other flavors of Linux), run the
+following commands</p>
+
+<pre>sudo apt-get install nginx
+sudo git clone git@github.com:ryanknu/zue.git /usr/share/nginx/www
+sudo cp /usr/share/nginx/www/index-offline.html /usr/share/nginx/www/index.html
+sudo service nginx restart</pre>
+
+<p>Now if you point a web browser to the IP address of your server, Zue should
+be running with no Internet access required at all.</p>
+
+<p>For example, at my lake cabin, I have a USB Wi-Fi adapter acting as an 
+access point and my Raspberry Pi is plugged into the Hue bridge.</p>
